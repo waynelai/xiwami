@@ -1,0 +1,22 @@
+﻿.ember-template-name {
+    height:60px;
+    border-style:dashed;
+    border-color: #000000;
+    border-width: 5px;
+    font-size:large;
+    padding-top: 10px;
+    margin-bottom:20px;
+}
+
+.edit_box {
+    width:300px;
+}
+
+.url_box {
+    width:600px;
+}
+
+.searchbox {
+    float: right;
+    margin-top:10px;
+}

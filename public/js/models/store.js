@@ -16,11 +16,16 @@ App.Article = DS.Model.extend({
 	title: DS.attr(),
 	url: DS.attr(),
 	isFavorite: DS.attr(),
-	content: DS.attr(),
+    textContent: DS.attr(),
+	htmlContent: DS.attr(),
 	creationDate: DS.attr(),
 	snippet: function() {
-	    return this.get('content').substring(0, 50);
-	}.property('content')
+	    return this.get('textContent').substring(0, 50);
+	}.property('textContent')
+});
+
+App.ReturnObj = DS.Model.extend({
+    message: DS.attr()
 });
 
 //App.Article.FIXTURES = [{

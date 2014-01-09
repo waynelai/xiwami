@@ -12,6 +12,7 @@
     "jade": "*",
     "stylus": "*",
     "mongoose": "~3.8.1",
-    "cheerio": "~0.12.4"
+    "cheerio": "~0.12.4",
+    "request": "~2.30.0"
   }
 }

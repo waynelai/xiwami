@@ -72,6 +72,7 @@
     <Compile Include="routes\index.js" />
     <Compile Include="routes\user.js" />
     <Content Include="package.json" />
+    <Content Include="public\css\app.css" />
     <Content Include="public\css\bootstrap-theme.css" />
     <Content Include="public\css\bootstrap-theme.min.css" />
     <Content Include="public\css\bootstrap.css" />

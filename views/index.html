@@ -16,6 +16,9 @@
     <!-- Custom styles for this template -->
     <link href="css/sticky-footer-navbar.css" rel="stylesheet">
 
+    <!-- Application Specific CSS -->
+    <link href="css/app.css" rel="stylesheet">
+
     <!-- Just for debugging purposes. Don't actually copy this line! -->
     <!--[if lt IE 9]><script src="../../docs-assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -25,8 +28,9 @@
     <![endif]-->
 
     <script type="text/x-handlebars" data-template-name="index">
-        This is the index template
-        <br />
+        <div class="ember-template-name">
+            This is the index template
+        </div>
         <div class="page-header">
             <h1>{{pageHeader}}</h1>
         </div>
@@ -34,24 +38,38 @@
             {{pageDescription}}
         </p>
         <div>
-            Index Main Content Here <br />
+            Index Main Content Here <br /><br />
+
+
+            Selected: {{selected}}
+            <!-- Standard gray default button with gradient -->
+            {{#bs-button}}Content{{/bs-button}}
+
+            <!--Inline text as button content-->
+            {{bs-button title="Inline Text"}}
+
+            <!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
+            {{#bs-button type="primary"}}Primary{{/bs-button}}
+
+            <!-- Deemphasize a button by making it look like a link while maintaining button behavior -->
+            {{#bs-button type="link"}}Link{{/bs-button}}
+
         </div>
 
     </script>
 
-    <!--<script type="text/x-handlebars" data-template-name="articles">
-        This is the articles template
+    <script type="text/x-handlebars" data-template-name="articles">
+        <div class="ember-template-name">
+            This is the articles template
+        </div>
+        Articles Outliet Below
         <br />
-
-        My Outliet again<br />
         {{outlet}}
-    </script>-->
+    </script>
 
     <script type="text/x-handlebars" data-template-name="articles/index">
-        This is the articles/index template
-        <br />
-        <div class="page-header">
-            <h1>{{pageHeader}}</h1>
+        <div class="ember-template-name">
+            This is the articles/index template
         </div>
         {{#each article in model}}
         <div class="row">
@@ -61,27 +79,26 @@
             <div class="col-md-3">{{#link-to "article" article}}Detail{{/link-to}}</div>
         </div>
         {{/each}}
-    </script>
 
+    </script>
     <script type="text/x-handlebars" data-template-name="articles/add">
-        This is the articles/add template
-        <br />
+        <div class="ember-template-name">
+            This is the articles/add template
+        </div>
         <div class="page-header">
             <h1>{{pageHeader}}</h1>
         </div>
-        <p class="lead">
-            {{pageDescription}}
-        </p>
         <div>
             <label>URL</label>
-            {{input value=url}}
+            {{input value=url class="url_box"}}
             <button {{action 'save' }}>Save</button>
         </div>
     </script>
 
     <script type="text/x-handlebars" data-template-name="articles/favorites">
-        This is the articles/favorites template
-        <br />
+        <div class="ember-template-name">
+            This is the articles/favorites template
+        </div>
         {{#each article in model}}
         <div class="row">
             <div class="col-md-3">{{article.title}}</div>
@@ -91,30 +108,140 @@
         </div>
         {{/each}}
     </script>
-    <script type="text/x-handlebars" data-template-name="articles/recent">
-        This is the articles/recent template
+    <script type="text/x-handlebars" data-template-name="recent">
+        <div class="ember-template-name">
+            This is the recent template
+        </div>
+        <div>
+            Recent Articles
+        </div>
+        <div>
+            Recent Discussions
+        </div>
+        <div>
+            Recent Postings
+        </div>
     </script>
     <script type="text/x-handlebars" data-template-name="explore">
-        This is the explore template
-    </script>
+        <div class="ember-template-name">
+            This is the explore template
+        </div>
+        <ul>
+            <li>Clustering of documents into categories for this user</li>
+            <li>Pre-defined generic categories such as Finance, Literature, Sports or Technology</li>
+            <li>Recommendation: based on preference, activities and ratings, we would recommend articles for this specific user</li>
+        </ul>
+        <div>
+            <h3>Clustering Result</h3>
+            <div>
 
-    <script type="text/x-handlebars" data-template-name="article/index">
-        This is the article/index template
-        <br />
+            </div>
+        </div>
+        <div>
+            <h3>Classification</h3>
+            <div>
+
+            </div>
+        </div>
+        <div>
+            <h3>Recommendation</h3>
+            <div>
+
+            </div>
+        </div>
     </script>
 
     <script type="text/x-handlebars" data-template-name="article">
-        This is the article template
-        <br />
-        Single Article Detail Page
-        <div class="row">
-            <div class="col-md-3">{{id}}</div>
-            <div class="col-md-3">{{title}}</div>
-            <div class="col-md-3">{{content}}</div>
-            <div class="col-md-3">{{creationDate}}</div>
+        <div class="ember-template-name">
+            This is the article template
+        </div>
+        <div class="ember-template-name">
+            Outlet for article tempalte is below
+        </div>
+        {{outlet}}
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="article/index">
+        <div class="ember-template-name">
+            This is the article/index template
         </div>
 
+        <div class="row">
+            <div class="col-md-12"><strong>ID:</strong> {{id}}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-4"><strong>IsFavorite:</strong> {{isFavorite}}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-8"><strong>Title:</strong> {{title}}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-12"><strong>Content:</strong> {{snippet}}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-12"><strong>Added Date:</strong> {{creationDate}}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">{{#link-to "article.edit" id}}Edit{{/link-to}}</div>
+        </div>
+        <div id="myContent">
+            {{controller.model.htmlContent}}
+        </div>
     </script>
+
+    <script type="text/x-handlebars" data-template-name="article/edit">
+        <div class="ember-template-name">
+            This is the article/edit template
+        </div>
+
+        <div class="row">
+            <div class="col-md-12"><strong>ID:</strong> {{input value=id}}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-12"><strong>IsFavorite:</strong> {{input type="checkbox" value=isFavorite}}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-12"><strong>Title:</strong> {{input value=title}}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-12"><strong>Content:</strong> {{input value=textContent}}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-12"><strong>Added Date:</strong> {{input value=creationDate}}</div>
+        </div>
+
+        <label>
+            is Favorite:
+            {{view Ember.Checkbox checkedBinding="isFavorite"}}
+        </label>
+        <label>
+            Title:
+            {{view Ember.TextField class="edit_box" valueBinding="title"}}
+        </label>
+        <label>
+            TextArea:
+            {{view Ember.TextArea class="edit_box" value=snippet rows="10"}}
+        </label>
+        <button>Save</button>
+
+
+
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="navigation">
+        <ul class="nav nav-tabs">
+            {{#view view.NavItemView item="home" }}
+            <a {{action gotohome}}>Home</a>
+            {{/view}}
+            {{#view view.NavItemView item="profiles" }}
+            <a {{action gotoprofiles}}>Profiles</a>
+            {{/view}}
+            {{#view view.NavItemView item="messages" }}
+            <a {{action gotomessages}}>Messages</a>
+            {{/view}}
+        </ul>
+    </script>
+
 </head>
 
 <body>
@@ -133,46 +260,14 @@
                             <span class="icon-bar"></span>
                         </button>
                         <a class="navbar-brand" href="#">Xiwami</a>
+
                     </div>
                     <div class="collapse navbar-collapse">
-                        <ul class="nav navbar-nav">
-                            <li class="active">
-                                {{#link-to "index"}}Home{{/link-to}}
-                            </li>
-                            <li>
-                                {{#link-to "articles.favorites"}}Favorites{{/link-to}}
-                            </li>
-                            <li>
-                                {{#link-to "articles.add"}}Add{{/link-to}}
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        {{#link-to "articles"}}Manage{{/link-to}}
-                                    </li>
-                                    <li>
-                                        {{#link-to "articles"}}Explore{{/link-to}}
-                                    </li>
-                                    <li>
-                                        {{#link-to "articles.favorites"}}Favorites{{/link-to}}
-                                    </li>
-                                    <li class="divider"></li>
-                                    <li class="dropdown-header">
-                                        Connections
-                                    </li>
-                                    <li>
-                                        <a href="#">Followed</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Followers</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Setting</a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
+                        <span class="searchbox">
+                            Search : {{input}} <button>Search</button>
+                        </span>
+                        {{bs-pills contentBinding="content" selectedBinding="selected"}}
+
                     </div><!--/.nav-collapse -->
                 </div>
             </div>
@@ -203,8 +298,14 @@
     <script src="js/libs/ember-1.1.2.js"></script>
     <script src="js/libs/ember-data.js"></script>
     <script src="js/libs/localstorage_adapter.js"></script>
+    <script src="js/components/bs-core.max.js"></script>
+    <script src="js/components/bs-nav.max.js"></script>
+    <script src="js/components/bs-button.max.js"></script>
+
     <script src="js/app.js"></script>
     <script src="js/models/store.js"></script>
     <script src="js/controllers/articles_controller.js"></script>
+    <script src="js/views/views.js"></script>
+
 </body>
 </html>
