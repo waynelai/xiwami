@@ -42,7 +42,9 @@ function ArticleDto(dmArticle) {
             htmlContent: dmArticle.htmlContent,
             creationDate: dmArticle.creationDate,
             title: dmArticle.title,
-            isFavorite: dmArticle.isFavorite
+            isFavorite: dmArticle.isFavorite,
+            publishTime: dmArticle.publishTime,
+            hostName: dmArticle.hostName
         };
     } else {
         return {};
@@ -63,24 +65,7 @@ exports.view = function (req, res) {
     });
 };
 
-
-    // Utility function that downloads a URL and invokes
-    // callback with the data.
-function download(url, callback) {
-    http.get(url, function (res) {
-        var data = "";
-        res.on('data', function (chunk) {
-            data += chunk;
-        });
-        res.on("end", function () {
-            callback(data);
-        });
-    }).on("error", function () {
-        callback(null);
-    });
-};
-
-function CreateArticleDomainModel(title, url, text, html) {
+function CreateArticleDomainModel(title, url, text, html, publishTime, hostName) {
     var newArticle = new Article();
 
     newArticle.title = title;;
@@ -89,6 +74,8 @@ function CreateArticleDomainModel(title, url, text, html) {
     newArticle.htmlContent = html;
     newArticle.isFavorite = false;
     newArticle.creationDate = new Date();
+    newArticle.publishTime = new Date(publishTime);
+    newArticle.hostName = hostName;
 
     return newArticle;
 }
@@ -97,29 +84,61 @@ exports.create = function (req, res) {
     var article = req.body.article;
     var url = article.url;
 
-    //debugger;
-    //Workout.findOne({ name: workout_name }, function(err, doc) {  // This line is case sensitive.
     Article.findOne({
         url: {
             $regex: new RegExp(url, "i")
         }
     }, function (err, doc) {// Using RegEx - search is case insensitive
         if (!err && !doc) {
-            download(url, function (data) {
-                if (data) {
-                    var $ = cheerio.load(data),
+            request(url, function (error, response, body) {
+                if (!error && response.statusCode == 200) {
+                    var $ = cheerio.load(body),
                         title = $('title').text(),
                         host = urlnpm.parse(url).host,
                         text = '',
-                        html = '';
+                        html = '',
+                        publishTime,
+                        $p,
+                        hostName = '';
 
-                    if (host.search('cnn.com') > 0) {
-                        // CNN.com
+                    if (host.search('cnn.com') > -1) {
+                        hostName = 'cnn.com';
                         var $parray = $('.cnn_strycntntlft p');
 
                         $parray.each(function (index, value) {
                             $p = $(this);
                             html += $p.html();
+                            text += $p.text();
+                        });
+                    } else if (host.search('espn.go.com') > -1) {
+                        hostName = 'espn.go.com';
+                        var $parray = $('.article p');
+
+                        $parray.each(function (index, value) {
+                            $p = $(this);
+                            html += $p.html();
+                            text += $p.text();
+                        });
+                    } else if (host.search('mrsec.com') > -1) {
+                        hostName = 'mrsec.com';
+                        var $parray = $('div.text p');
+
+                        title = $('div.cunlock_main_content h1 a.link1').text();
+                        publishTime = $("meta[property='article:published_time']").attr("content");
+                        $parray.each(function (index, value) {
+                            $p = $(this);
+                            html += "<p>" + $p.html() + "</p>";
+                            text += $p.text();
+                        });
+                    } else if (host.search('frankthetank.me') > -1) {
+                        hostName = 'frankthetank.me';
+                        var $parray = $('div.entry p');
+
+                        title = $('.pagetitle').text();
+                        publishTime = url.substring(23, 33);
+                        $parray.each(function (index, value) {
+                            $p = $(this);
+                            html += "<p>" + $p.html() + "</p>";
                             text += $p.text();
                         });
                     } else {
@@ -129,12 +148,27 @@ exports.create = function (req, res) {
                         html = $('body').text();
                     }
 
-                    var newArticle = CreateArticleDomainModel(title, url, text, html);
+                    var newArticle = CreateArticleDomainModel(title, url, text, html, publishTime, host);
 
                     newArticle.save(function (err, art) {
                         if (!err) {
                             //req.session.message = ["Article Created"];
                             var obj = ArticleDto(art);
+                            //request.write(JSON.stringify(some_json),encoding='utf8');
+
+                            var options = {
+                              //uri: 'http://localhost:8983/solr/core1/update/json?commit=true',
+                              uri: 'http://192.168.244.133:8983/solr/core1/update/json?commit=true',
+                              method: 'POST',
+                              json:  [obj]
+                            };
+
+                            request(options, function (error, response, body) {
+                              if (!error && response.statusCode == 200) {
+                                console.log(body.id) // Print the shortened url.
+                              }
+                            });
+
                             res.json(201, {
                                 //message: "Article created with ID: " + art._id.toString()
                                 article: obj
@@ -144,9 +178,8 @@ exports.create = function (req, res) {
                                 message: "Could not create article. Error: " + err
                             });
                         }
-                    });
-                }
-                else {
+                    });                    
+                } else {
                     res.json(403, {
                         message: "Cannot access the article from the web."
                     });

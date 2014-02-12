@@ -55,7 +55,39 @@
             {{#bs-button type="link"}}Link{{/bs-button}}
 
         </div>
+    </script>
 
+    <script type="text/x-handlebars" data-template-name="articles/search">
+        <div class="ember-template-name">
+            This is the search template
+        </div>
+        <div class="page-header">
+            <h1>{{pageHeader}}</h1>
+        </div>
+        <p class="lead">
+            {{pageDescription}}
+        </p>
+        <div>
+            Search Result <br /><br />
+            {{#each doc in model.response.docs}}
+            <div class="row">
+                <div class="col-md-12">
+                    <a {{bindattr href="doc.url" }}>{{doc.title}}</a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">{{doc.url}}</div>
+            </div>
+            <div id="myContent">
+                {{doc.textContent}}
+            </div>
+            {{/each}}
+        </div>
+    </script>
+
+    <script type="text/x-handlebars" id="components/search-widget">
+        Search : {{input value=query}}
+        <button {{action "search" }}>Search</button>
     </script>
 
     <script type="text/x-handlebars" data-template-name="articles">
@@ -73,14 +105,16 @@
         </div>
         {{#each article in model}}
         <div class="row">
-            <div class="col-md-3">{{article.title}}</div>
-            <div class="col-md-3">{{article.snippet}}</div>
-            <div class="col-md-3">{{article.creationDate}}</div>
-            <div class="col-md-3">{{#link-to "article" article}}Detail{{/link-to}}</div>
+            <div class="col-md-5">{{article.title}}</div>
+            <div class="col-md-4">{{article.snippet}}</div>
+            <div class="col-md-2">{{article.creationDate}}</div>
+            <div class="col-md-1">{{#link-to "article" article}}Detail{{/link-to}}</div>
         </div>
+        <br />
         {{/each}}
 
     </script>
+
     <script type="text/x-handlebars" data-template-name="articles/add">
         <div class="ember-template-name">
             This is the articles/add template
@@ -108,6 +142,7 @@
         </div>
         {{/each}}
     </script>
+
     <script type="text/x-handlebars" data-template-name="recent">
         <div class="ember-template-name">
             This is the recent template
@@ -122,6 +157,7 @@
             Recent Postings
         </div>
     </script>
+
     <script type="text/x-handlebars" data-template-name="explore">
         <div class="ember-template-name">
             This is the explore template
@@ -167,25 +203,22 @@
         </div>
 
         <div class="row">
-            <div class="col-md-12"><strong>ID:</strong> {{id}}</div>
+            <div class="col-md-6"><strong>ID:</strong> {{id}}</div>
+            <div class="col-md-6"><strong>IsFavorite:</strong> {{isFavorite}}</div>
         </div>
         <div class="row">
-            <div class="col-md-4"><strong>IsFavorite:</strong> {{isFavorite}}</div>
+            <div class="col-md-12"><strong>Title:</strong> {{title}}</div>
         </div>
         <div class="row">
-            <div class="col-md-8"><strong>Title:</strong> {{title}}</div>
+            <div class="col-md-6"><strong>Published Date:</strong> {{publishTime}}</div>
+            <div class="col-md-6"><strong>Added Date:</strong> {{creationDate}}</div>
         </div>
         <div class="row">
-            <div class="col-md-12"><strong>Content:</strong> {{snippet}}</div>
+            <div class="col-md-3">{{#link-to "article.edit" id}}Edit{{/link-to}}</div>
+            <div class="col-md-3">{{#link-to "article.edit" id}}Share{{/link-to}}</div>
         </div>
-        <div class="row">
-            <div class="col-md-12"><strong>Added Date:</strong> {{creationDate}}</div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">{{#link-to "article.edit" id}}Edit{{/link-to}}</div>
-        </div>
-        <div id="myContent">
-            {{controller.model.htmlContent}}
+        <div class="row" id="myContent">
+            {{{controller.model.htmlContent}}}
         </div>
     </script>
 
@@ -198,30 +231,33 @@
             <div class="col-md-12"><strong>ID:</strong> {{input value=id}}</div>
         </div>
         <div class="row">
-            <div class="col-md-12"><strong>IsFavorite:</strong> {{input type="checkbox" value=isFavorite}}</div>
+            <div class="col-md-12">
+                <label>
+                    is Favorite:
+                    {{view Ember.Checkbox checkedBinding="isFavorite"}}
+                </label>
+            </div>
         </div>
         <div class="row">
-            <div class="col-md-12"><strong>Title:</strong> {{input value=title}}</div>
+            <div class="col-md-12">
+                <label>
+                    Title:
+                    {{view Ember.TextField class="edit_box" valueBinding="title"}}
+                </label>
+            </div>
         </div>
         <div class="row">
-            <div class="col-md-12"><strong>Content:</strong> {{input value=textContent}}</div>
-        </div>
-        <div class="row">
-            <div class="col-md-12"><strong>Added Date:</strong> {{input value=creationDate}}</div>
+            <div class="col-md-12">
+                <label>
+                    Added Date:
+                    {{view Ember.TextField class="edit_box" valueBinding="creationDate"}}
+                </label>
+            </div>
         </div>
 
-        <label>
-            is Favorite:
-            {{view Ember.Checkbox checkedBinding="isFavorite"}}
-        </label>
-        <label>
-            Title:
-            {{view Ember.TextField class="edit_box" valueBinding="title"}}
-        </label>
-        <label>
-            TextArea:
-            {{view Ember.TextArea class="edit_box" value=snippet rows="10"}}
-        </label>
+
+
+
         <button>Save</button>
 
 
@@ -263,9 +299,7 @@
 
                     </div>
                     <div class="collapse navbar-collapse">
-                        <span class="searchbox">
-                            Search : {{input}} <button>Search</button>
-                        </span>
+                        {{search-widget action="search"}}
                         {{bs-pills contentBinding="content" selectedBinding="selected"}}
 
                     </div><!--/.nav-collapse -->
@@ -306,6 +340,7 @@
     <script src="js/models/store.js"></script>
     <script src="js/controllers/articles_controller.js"></script>
     <script src="js/views/views.js"></script>
+    <script src="js/components/search-widget.js"></script>
 
 </body>
 </html>

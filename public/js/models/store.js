@@ -19,6 +19,8 @@ App.Article = DS.Model.extend({
     textContent: DS.attr(),
 	htmlContent: DS.attr(),
 	creationDate: DS.attr(),
+    hostName: DS.attr(),
+    publishTime: DS.attr(),
 	snippet: function() {
 	    return this.get('textContent').substring(0, 50);
 	}.property('textContent')

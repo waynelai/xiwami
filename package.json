@@ -13,6 +13,8 @@
     "stylus": "*",
     "mongoose": "~3.8.1",
     "cheerio": "~0.12.4",
-    "request": "~2.30.0"
+    "request": "~2.30.0",
+    "aws-sign": "~0.1.1",
+    "kerberos": "0.0.3"
   }
 }

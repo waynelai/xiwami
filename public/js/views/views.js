@@ -21,12 +21,12 @@ App.ArticleEditView = Ember.View.extend({
 
     submit: function(event) {
         event.preventDefault();
-
+        var $this = this;
         var article = this.get('controller').get('model');
 
         var onSuccess = function(article) {
             debugger;
-            this.transitionToRoute('article/index', article);
+            $this.get('controller').transitionToRoute('article', article);
         };
 
         var onFail = function() {
@@ -35,5 +35,11 @@ App.ArticleEditView = Ember.View.extend({
         };
 
         article.save().then(onSuccess, onFail);
+    }
+});
+
+var ArticlesSearchView = Ember.View.create({
+    didInsertElement: function() {
+        debugger;
     }
 });

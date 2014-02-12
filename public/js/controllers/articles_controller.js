@@ -8,17 +8,20 @@
         Ember.Object.create({title: 'Add', linkTo: 'articles.add'})
     ],
 
+    actions: {
+        search: function(query) {
+            this.transitionToRoute('articles.search', query);
+        }
+    },
+
     contentChanged: (function() {
         return console.log("Selection has changed to: " + (this.get('selected').title));
     }).observes('selected')
 });
 
 App.IndexController = Ember.ObjectController.extend({
-
     pageHeader: "This is the index page.",
-
     pageDescription: "This is going to be a beautiful layout of recent articles from you or your friends",
-
 });
 
 App.ArticlesAddController = Ember.ObjectController.extend({
@@ -61,17 +64,12 @@ App.ArticleEditController = Ember.ObjectController.extend({
             // just before saving, we set the creationDate
             var article = this.get('model');
 
-            article.set('title', 'new title');
-            article.set('isFavorite', false);
-
             var onSuccess = function(article) {
-                debugger;
                 this.transitionToRoute('article/index', article);
             };
 
             var onFail = function(post) {
                 // deal with the failure here
-                debugger;
             };
 
             article.save().then(onSuccess, onFail);

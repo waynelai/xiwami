@@ -32,6 +32,7 @@ App.Router.map(function () {
 	this.resource('articles', function () {
 		this.route('add');
 		this.route('favorites');
+        this.route('search', { path: '/search/:query'});
 	});
 
 	this.resource('article', { path: '/article/:id' }, function () {
@@ -45,6 +46,14 @@ App.Router.map(function () {
 	this.resource('recent', function () {
 
 	});
+});
+
+App.ApplicationRoute = Ember.Route.extend({
+    actions: {
+        search: function(query) {
+            debugger;
+        }
+    },
 });
 
 App.IndexRoute = Ember.Route.extend({
@@ -131,5 +140,18 @@ App.ExplorerIndexRoute = Ember.Route.extend({
 	},
 	afterModel: function(article, transition, queryparam) {
 
+	}
+});
+
+App.ArticlesSearchRoute = Ember.Route.extend({
+	model: function(params, transition, queryparams) {
+        //var myjson = Ember.$.getJSON('http://localhost:8983/solr/core1/select?q=test&wt=json&indent=true');
+        //return myjson;
+
+        return Ember.$.ajax({
+          url: 'http://192.168.244.133:8983/solr/core1/select?q=' + params.query + '&wt=json&indent=true',
+          dataType: 'jsonp',
+          jsonp: 'json.wrf'
+        });
 	}
 });
