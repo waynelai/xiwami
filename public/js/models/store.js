@@ -12,6 +12,18 @@ App.ApplicationAdapter = DS.LSAdapter.extend({
 //	host: 'http://localhost:3000'
 //});
 
+//App.Adapter.map('App.Post', {
+//  primaryKey: '_id'
+//});
+
+//DS.RESTAdapter.map('App.Cluster', {
+//  primaryKey: '_id'
+//});
+
+//App.ClusterSerializer = DS.JSONSerializer.extend({
+//  primaryKey: '_id'
+//});
+
 App.Article = DS.Model.extend({
 	title: DS.attr(),
 	url: DS.attr(),
@@ -28,6 +40,31 @@ App.Article = DS.Model.extend({
 
 App.ReturnObj = DS.Model.extend({
     message: DS.attr()
+});
+
+App.Cluster = DS.Model.extend({
+    //clusterId: DS.attr(),
+    //_id: DS.attr()
+	clusterId: DS.attr(),
+    terms: DS.attr('raw')
+    //terms: DS.hasMany('term')
+});
+
+//App.Term = DS.Model.extend({
+//    termName: DS.attr(),
+//    termValue: DS.attr(),
+//    cluster: DS.belongsTo('cluster')
+//});
+
+App.RawTransform = DS.Transform.extend({
+    deserialize: function(serialized) {
+        //debugger;
+        return serialized;
+    },
+    serialize: function(deserialized) {
+        //debugger;
+        return deserialized;
+    }
 });
 
 //App.Article.FIXTURES = [{

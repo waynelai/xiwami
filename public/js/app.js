@@ -98,6 +98,12 @@ App.ArticlesFavoritesRoute = Ember.Route.extend({
 		//    return article.get('isFavorite');
 		//});
 	}
+,
+	afterModel: function(article, transition, queryparam) {
+        debugger;
+        var a = this.get('model');
+
+	}
 });
 
 App.ArticlesRecentRoute = Ember.Route.extend({
@@ -131,14 +137,14 @@ App.ArticleEditRoute = Ember.Route.extend({
 	}
 });
 
-App.ExplorerIndexRoute = Ember.Route.extend({
+App.ExploreIndexRoute = Ember.Route.extend({
 	beforeModel: function(transition, queryparams) {
 
 	},
 	model: function(params, transition, queryparams) {
-		return this.store.find('article');
+		return this.store.find('cluster');
 	},
-	afterModel: function(article, transition, queryparam) {
+	afterModel: function(data, transition, queryparam) {
 
 	}
 });

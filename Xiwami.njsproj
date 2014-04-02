@@ -31,6 +31,7 @@
   <ItemGroup>
     <Compile Include="app.js" />
     <Compile Include="models\articles.js" />
+    <Compile Include="models\clusters.js" />
     <Compile Include="public\js\app.js" />
     <Compile Include="public\js\bootstrap.js" />
     <Compile Include="public\js\bootstrap.min.js" />
@@ -60,16 +61,19 @@
     <Compile Include="public\js\components\bs-progressbar.min.js" />
     <Compile Include="public\js\components\bs-wizard.max.js" />
     <Compile Include="public\js\components\bs-wizard.min.js" />
+    <Compile Include="public\js\components\login-widget.js" />
     <Compile Include="public\js\controllers\articles_controller.js" />
-    <Compile Include="public\js\libs\ember-1.1.2.js" />
+    <Compile Include="public\js\controllers\ml_controller.js" />
+    <Compile Include="public\js\libs\ember.js" />
     <Compile Include="public\js\libs\ember-data.js" />
-    <Compile Include="public\js\libs\handlebars-1.0.0.js" />
-    <Compile Include="public\js\libs\jquery-1.9.1.js" />
+    <Compile Include="public\js\libs\handlebars.js" />
     <Compile Include="public\js\libs\localstorage_adapter.js" />
     <Compile Include="public\js\models\store.js" />
     <Compile Include="public\js\views\views.js" />
     <Compile Include="routes\articles.js" />
     <Compile Include="routes\index.js" />
+    <Compile Include="routes\clusters.js" />
+    <Compile Include="routes\login.js" />
     <Compile Include="routes\user.js" />
     <Content Include="package.json" />
     <Content Include="public\css\app.css" />
@@ -88,6 +92,8 @@
     <Content Include="views\index.html" />
     <Content Include="views\index.jade" />
     <Content Include="views\layout.jade" />
+    <Content Include="views\login.html" />
+    <Content Include="views\login.jade" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="models\" />

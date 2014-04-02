@@ -8,12 +8,21 @@ var express = require('express'),
     user = require('./routes/user'),
     http = require('http'),
     path = require('path'),
+    login = require('./routes/login'),
 	articles = require('./routes/articles'),
+	clusters = require('./routes/clusters'),
 	mongoose = require('mongoose');
 
 mongoose.connect('mongodb://localhost/xiwami');
 
 var app = express();
+
+process.on('SIGINT', function() {
+  mongoose.connection.close(function () {
+    console.log('Mongoose disconnected through app termination');
+    process.exit(0);
+  });
+});
 
 // all environments
 app.set('port', process.env.PORT || 3000);
@@ -34,9 +43,11 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
+app.get('/login', login.index);
 app.get('/users', user.list);
 app.get('/articles', articles.list);
 app.get('/articles/:id', articles.view);
+app.get('/clusters', clusters.index);
 
 app.post('/articles', articles.create);
 

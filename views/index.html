@@ -40,6 +40,26 @@
         <div>
             Index Main Content Here <br /><br />
 
+            <div class="dropdown">
+                <button class="btn dropdown-toggle sr-onlys" type="button" id="dropdownMenu1" data-toggle="dropdown">
+                    Dropdown
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Action</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another action</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
+                    <li role="presentation" class="divider"></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Separated link</a></li>
+                </ul>
+            </div>
+
+            <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Left<span class="caret"></span>
+<span class="sr-only">Toggle Dropdown</span></button>
+                <button type="button" class="btn btn-default">Middle</button>
+                <button type="button" class="btn btn-default">Right</button>
+            </div>
 
             Selected: {{selected}}
             <!-- Standard gray default button with gradient -->
@@ -86,8 +106,16 @@
     </script>
 
     <script type="text/x-handlebars" id="components/search-widget">
-        Search : {{input value=query}}
-        <button {{action "search" }}>Search</button>
+        <div class="input-group">
+            {{input type="text" placeholder="Search Articles" class="form-control" value=query}}
+            <button type="button" class="btn btn-default" {{action "search" }}><span class="glyphicon glyphicon-search"></span></button>
+        </div>
+    </script>
+
+    <script type="text/x-handlebars" id="components/login-widget">
+        <div class="input-group">
+            <button type="button" class="btn btn-default" {{action "login" }}>Signup</button>
+        </div>
     </script>
 
     <script type="text/x-handlebars" data-template-name="articles">
@@ -168,10 +196,7 @@
             <li>Recommendation: based on preference, activities and ratings, we would recommend articles for this specific user</li>
         </ul>
         <div>
-            <h3>Clustering Result</h3>
-            <div>
-
-            </div>
+            {{outlet}}
         </div>
         <div>
             <h3>Classification</h3>
@@ -184,6 +209,30 @@
             <div>
 
             </div>
+        </div>
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="explore/index">
+        <h3>Clustering Results</h3>
+        <div>
+            {{#each cluster in model}}
+                <div class="row">
+                    <div class="col-md-3">{{cluster.id}}</div>
+                    <div class="col-md-3">{{cluster.clusterId}}</div>
+                    <div class="col-md-3">TESTABC</div>
+                    <div class="col-md-3">TEST</div>
+                </div>
+
+                {{#each term in cluster.terms}}
+                    <div class="row">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-3">Term</div>
+                        <div class="col-md-3">{{term.termName}}</div>
+                        <div class="col-md-3">{{term.termValue}}</div>
+
+                    </div>                    
+                {{/each}}
+            {{/each}}
         </div>
     </script>
 
@@ -299,6 +348,7 @@
 
                     </div>
                     <div class="collapse navbar-collapse">
+                        {{login-widget action="login"}}
                         {{search-widget action="search"}}
                         {{bs-pills contentBinding="content" selectedBinding="selected"}}
 
@@ -328,8 +378,8 @@
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
 
-    <script src="js/libs/handlebars-1.0.0.js"></script>
-    <script src="js/libs/ember-1.1.2.js"></script>
+    <script src="js/libs/handlebars.js"></script>
+    <script src="js/libs/ember.js"></script>
     <script src="js/libs/ember-data.js"></script>
     <script src="js/libs/localstorage_adapter.js"></script>
     <script src="js/components/bs-core.max.js"></script>
